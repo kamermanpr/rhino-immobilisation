@@ -1,0 +1,185 @@
+---
+title: 'Rhino immobilisation: Arterial PCO2'
+author: "Peter Kamerman"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+#  html_document:
+   # highlight: pygments
+   # theme: yeti
+   # number_sections: true
+   # code_folding: hide
+   # toc: yes
+   # toc_depth: 4
+   # toc_float: true
+  pdf_document:
+    highlight: pygments
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+geometry:
+- a4paper
+- margin=25mm
+---
+
+```{r setup, include = FALSE}
+# Load packages
+library(tidyverse)
+library(influence.ME)
+library(car)
+library(lme4)
+library(lmerTest)
+
+# knitr options
+knitr::opts_chunk$set(warning = TRUE,
+                      message = TRUE,
+                      fig.align = 'center',
+                      fig.path = './figures/PCO2_boma/',
+                      echo = TRUE)
+
+# Load data
+df <- read_rds('./data/PCO2_boma.rds')
+```
+
+# Quick look at the data
+```{r quick_look}
+# Dataframe dimensions
+dim(df)
+# Column names
+names(df)
+# Top six rows of data
+head(df)
+# Structure of the dataframe
+glimpse(df)
+```
+
+# Plot
+```{r plot}
+# Generate a summary df
+df %>%
+    # Calculate mean resp rate
+    group_by(time_min, intervention, supplement) %>%
+    summarise(mean = round(mean(PCO2), 1)) %>%
+    # Plot 
+    ggplot(data = .) +
+    aes(y = mean,
+        x = time_min,
+        colour = intervention) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_colour_brewer(name = 'Intervention: ',
+                        type = 'qual', 
+                        palette = 'Dark2') +
+    labs(title = 'Boma: Mean arterial PCO2 in eight rhinos during immobilisation',
+         subtitle = '(First measurement made five minutes after recumbancy)',
+         x = 'Minutes since recumbancy',
+         y = 'Arterial PCO2 (mm Hg)') +
+    facet_grid(.~supplement) +
+    theme_bw(base_size = 14) +
+    theme(legend.position = 'top')
+```
+
+\newpage
+
+# Analyses
+
+****
+
+**Note:** Analysis compares _Butorphanol_ to _Saline_ and _Butorphanol + M5050_, and only includes main effects.
+
+****
+
+## Linear mixed models
+### Without supplemental oxygen
+#### Model 
+```{r model}
+# Extract data
+df_no_O2 <- df %>%
+    ungroup() %>%
+    # Filter out O2 groups
+    filter(supplement == 'nothing') 
+
+# Build model 
+mod_1 <- lmer(PCO2 ~ time_min + intervention + (1 | id), 
+              data = df_no_O2)
+
+# Perform type II Anova checking main effects only
+anova(mod_1, type = 2)
+
+# Model summary
+summary(mod_1)
+```
+
+#### Model diagnostics
+```{r diagnostics}
+# Diagnostics on mod_1
+## qq plot
+qqPlot(x = resid(mod_1), 
+       distribution = 'norm',
+       main = 'Check for normality of residuals')
+## residual plots
+plot(mod_1,
+     main = 'Check for homoskedasticity')
+plot(mod_1, resid(., type = 'pearson', scaled = TRUE) ~ fitted(.),
+     main = 'Check for homoskedasticity\n(standardized residuals)')
+## Linearity
+### Time
+plot(x = df_no_O2$time_min, 
+     y = residuals(mod_1, type = 'pearson'),
+     main = 'Check for linearity: Time') 
+abline(h = 0)
+### Intervention
+plot(x = df_no_O2$intervention, 
+     y = residuals(mod_1, type = 'pearson'),
+     main = 'Check for linearity: Intervention') 
+abline(h = 0)
+```
+
+### With supplemental oxygen
+#### Model 
+```{r model_02}
+# Extract data
+df_O2 <- df %>%
+    ungroup() %>%
+    # Filter out no O2 groups
+    filter(supplement == 'oxygen')
+
+# Build model 
+mod_2 <- lmer(PCO2 ~ time_min + intervention + (1 | id), 
+              data = df_O2)
+
+# Perform type II Anova checking main effects only
+anova(mod_2, type = 2)
+
+# Model summary
+summary(mod_2)
+```
+
+#### Model diagnostics
+```{r diagnostics_02}
+# Diagnostics on mod_2
+## qq plot
+qqPlot(x = resid(mod_2), 
+       distribution = 'norm',
+       main = 'Check for normality of residuals')
+## residual plots
+plot(mod_2,
+     main = 'Check for homoskedasticity')
+plot(mod_2, resid(., type = 'pearson', scaled = TRUE) ~ fitted(.),
+     main = 'Check for homoskedasticity\n(standardized residuals)')
+## Linearity
+### Time
+plot(x = df_O2$time_min, 
+     y = residuals(mod_2, type = 'pearson'),
+     main = 'Check for linearity: Time') 
+abline(h = 0)
+### Intervention
+plot(x = df_O2$intervention, 
+     y = residuals(mod_2, type = 'pearson'),
+     main = 'Check for linearity: Intervention') 
+abline(h = 0)
+```
+
+# Session information
+```{r session_info}
+sessionInfo()
+```

@@ -1,0 +1,134 @@
+---
+title: 'Rhino immobilisation in the field: Arterial PCO2'
+author: "Peter Kamerman"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+#  html_document:
+   # highlight: pygments
+   # theme: yeti
+   # number_sections: true
+   # code_folding: hide
+   # toc: yes
+   # toc_depth: 4
+   # toc_float: true
+  pdf_document:
+    highlight: pygments
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+geometry:
+- a4paper
+- margin=25mm
+---
+
+```{r setup, include = FALSE}
+# Load packages
+library(tidyverse)
+library(influence.ME)
+library(car)
+library(lme4)
+library(lmerTest)
+
+# knitr options
+knitr::opts_chunk$set(warning = TRUE,
+                      message = TRUE,
+                      fig.align = 'center',
+                      fig.path = './figures/PCO2_field/',
+                      echo = TRUE)
+
+# Load data
+df <- read_rds('./data/PCO2_field.rds')
+```
+
+# Quick look at the data
+```{r quick_look}
+# Dataframe dimensions
+dim(df)
+# Column names
+names(df)
+# Top six rows of data
+head(df)
+# Structure of the dataframe
+glimpse(df)
+```
+
+# Plot
+```{r plot}
+# Generate a summary df
+df %>%
+    # Calculate mean resp rate
+    group_by(time_min, intervention) %>%
+    summarise(mean = round(mean(PCO2), 1)) %>%
+    # Plot 
+    ggplot(data = .) +
+    aes(y = mean,
+        x = time_min,
+        colour = intervention) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_colour_brewer(name = 'Intervention: ',
+                        type = 'qual', 
+                        palette = 'Dark2') +
+    labs(title = 'Mean arterial PCO2 in rhinos during immobilisation',
+         subtitle = '(First measurement made five minutes after recumbancy)',
+         x = 'Minutes since recumbancy',
+         y = 'Arterial PCO2 (mm Hg)') +
+    theme_bw(base_size = 14) +
+    theme(legend.position = 'top')
+```
+
+\newpage
+
+# Analyses
+
+****
+
+**Note:** Analysis compares _Butorphanol_ to _Butorphanol + M5050_, and only includes main effects. Also, unlike the boma trials, all interventions included supplemental oxygen.
+
+****
+
+## Linear mixed models
+### With supplemental oxygen
+#### Model 
+```{r model}
+# Build model 
+## Used a square-root transform on 'PO2' to normalise the residuals
+mod_1 <- lmer(sqrt(PCO2) ~ time_min + intervention + (1 | id), 
+              data = df)
+
+# Perform type II Anova checking main effects only
+anova(mod_1, type = 2)
+
+# Model summary
+summary(mod_1)
+```
+
+#### Model diagnostics
+```{r diagnostics}
+# Diagnostics on mod_1
+## qq plot
+qqPlot(x = resid(mod_1), 
+       distribution = 'norm',
+       main = 'Check for normality of residuals')
+## residual plots
+plot(mod_1,
+     main = 'Check for homoskedasticity')
+plot(mod_1, resid(., type = 'pearson', scaled = TRUE) ~ fitted(.),
+     main = 'Check for homoskedasticity\n(standardized residuals)')
+## Linearity
+### Time
+plot(x = df$time_min, 
+     y = residuals(mod_1, type = 'pearson'),
+     main = 'Check for linearity: Time') 
+abline(h = 0)
+### Intervention
+plot(x = df$intervention, 
+     y = residuals(mod_1, type = 'pearson'),
+     main = 'Check for linearity: Intervention') 
+abline(h = 0)
+```
+
+# Session information
+```{r session_info}
+sessionInfo()
+```

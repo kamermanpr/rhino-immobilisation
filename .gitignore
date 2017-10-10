@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.html
+*.pdf
+.DS_Store
+documents/
+figures/
+packrat/lib*/

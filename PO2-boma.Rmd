@@ -1,0 +1,403 @@
+---
+title: 'Rhino immobilisation in a boma: Arterial PO2'
+author: "Peter Kamerman"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+#  html_document:
+   # highlight: pygments
+   # theme: yeti
+   # number_sections: true
+   # code_folding: hide
+   # toc: yes
+   # toc_depth: 4
+   # toc_float: true
+  pdf_document:
+    highlight: pygments
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+geometry:
+- a4paper
+- margin=25mm
+---
+
+```{r setup, include = FALSE}
+# Load packages
+library(tidyverse)
+library(car)
+library(influence.ME)
+library(lme4)
+library(lmerTest)
+
+# knitr options
+knitr::opts_chunk$set(warning = TRUE,
+                      message = TRUE,
+                      fig.align = 'center',
+                      fig.path = './figures/PO2_boma/',
+                      echo = TRUE)
+
+# Load data
+df <- read_rds('./data/PO2_boma.rds')
+```
+
+# Quick look at the data
+```{r quick_look}
+# Dataframe dimensions
+dim(df)
+# Column names
+names(df)
+# Top six rows of data
+head(df)
+# Structure of the dataframe
+glimpse(df)
+```
+
+# Plot
+```{r plot}
+# Generate a summary df
+df %>%
+    # Calculate mean resp rate
+    group_by(time_min, intervention, supplement) %>%
+    summarise(mean = round(mean(PO2), 1)) %>%
+    # Plot 
+    ggplot(data = .) +
+    aes(y = mean,
+        x = time_min,
+        colour = intervention) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_colour_brewer(name = 'Intervention: ',
+                        type = 'qual', 
+                        palette = 'Dark2') +
+    labs(title = 'Mean arterial PO2 in eight rhinos during immobilisation',
+         subtitle = '(First measurement made five minutes after recumbancy)',
+         x = 'Minutes since recumbancy',
+         y = 'Arterial PO2 (mm Hg)') +
+    facet_grid(.~supplement) +
+    theme_bw(base_size = 14) +
+    theme(legend.position = 'top')
+```
+
+\newpage
+
+# Analyses
+
+****
+
+**Note**: Analysis compares _Butorphanol_ to _Saline_ and _Butorphanol + M5050_, and only includes main effects.
+
+****
+
+## Linear mixed models
+### Without supplemental oxygen
+#### Model 
+```{r model}
+# Extract data
+df_no_O2 <- df %>%
+    ungroup() %>%
+    # Filter out O2 groups
+    filter(supplement == 'nothing') 
+
+# Build model 
+mod_1 <- lmer(PO2 ~ time_min + intervention + (1 | id), 
+              data = df_no_O2)
+
+# Perform type II Anova checking main effects only
+anova(mod_1, type = 2)
+
+# Model summary
+summary(mod_1)
+```
+
+#### Model diagnostics
+```{r diagnostics}
+## qq plot
+qqPlot(x = resid(mod_1), 
+       distribution = 'norm',
+       main = 'Check for normality of residuals')
+## residual plots
+plot(mod_1,
+     main = 'Check for homoskedasticity')
+plot(mod_1, resid(., type = 'pearson', scaled = TRUE) ~ fitted(.),
+     main = 'Check for homoskedasticity\n(standardized residuals)')
+## Outliers (cut-off dfbetas > 1)
+### Generate influence object
+mod_influence <- influence(model = mod_1,
+                           group = 'id')
+### Plot dfbetas
+plot(x = mod_influence, 
+     which = 'dfbetas',
+     abs = TRUE,
+     cutoff = 1)
+## Linearity
+### Time
+plot(x = df_no_O2$time_min, 
+     y = residuals(mod_1, type = 'pearson'),
+     main = 'Check for linearity: Time') 
+abline(h = 0)
+### Intervention
+plot(x = df_no_O2$intervention, 
+     y = residuals(mod_1, type = 'pearson'),
+     main = 'Check for linearity: Intervention') 
+abline(h = 0)
+```
+
+### With supplemental oxygen
+#### Model
+```{r model_02}
+# Extract data
+df_O2 <- df %>%
+    ungroup() %>%
+    # Filter out no O2 groups
+    filter(supplement == 'oxygen')
+
+# Build model 
+mod_2 <- lmer(PO2 ~ time_min + intervention + (1 | id), 
+              data = df_O2)
+
+# Perform type II Anova checking main effects only
+anova(mod_2, type = 2)
+
+# Model summary
+summary(mod_2)
+```
+
+#### Model diagnostics
+```{r diagnostics_02}
+# Diagnostics on mod_2
+qqPlot(x = resid(mod_2), 
+       distribution = 'norm',
+       main = 'Check for normality of residuals')
+## residual plots
+plot(mod_2,
+     main = 'Check for homoskedasticity')
+plot(mod_2, resid(., type = 'pearson', scaled = TRUE) ~ fitted(.),
+     main = 'Check for homoskedasticity\n(standardized residuals)')
+## Outliers (cut-off dfbetas > 1)
+### Generate influence object
+mod_influence <- influence(model = mod_2,
+                           group = 'id')
+### Plot dfbetas
+plot(x = mod_influence, 
+     which = 'dfbetas',
+     abs = TRUE,
+     cutoff = 1)
+## Linearity
+### Time
+plot(x = df_O2$time_min, 
+     y = residuals(mod_2, type = 'pearson'),
+     main = 'Check for linearity: Time') 
+abline(h = 0)
+### Intervention
+plot(x = df_O2$intervention, 
+     y = residuals(mod_2, type = 'pearson'),
+     main = 'Check for linearity: Intervention') 
+abline(h = 0)
+```
+
+The QQ-plot for the with supplemental oxygen trial, and the residuals vs fitted plots for both trials (with and without supplemental oxygen) indicate the the models do not meet linear regression assumptions so we repeated the analyses using robust regression, as implemenented by the `robustlmm::rlmer` function. 
+
+**Note:** that the `robustlmm::rlmer` function does not produce _p-values_. As such, statistical significance has been assessed by calculating simple percentile bootstrap 95% confidence limits for the beta coefficients, and confidence intervals that did not include 0 were deemed significant.
+
+## Robust regression
+```{r setup_2}
+# Load package
+library(robustlmm)
+
+# Generate a function to generate a bootstrap sample of regression coefficients
+boot_coef <- function(d, coeff = 1){
+    # Nest dataframe by id 
+    # (to ensure that each animal's measurements over time are kept together)
+    foo <- tidyr::nest(dplyr::group_by(d, id))
+    # Sample rows with replacement (8 rhinos used)
+    bar <- sample_n(foo, size = 8, replace = TRUE)
+    # Unnest sampled rows
+    baz <- tidyr::unnest(bar) 
+    # Run model
+    mod <- robustlmm::rlmer(PO2 ~ time_min + intervention + (1 | id), 
+                            data = baz)
+    # Extract desired coefficient
+    summary(mod)$coefficients[[coeff]]
+}
+```
+
+### Without supplemental oxygen
+#### Model 
+```{r robust_no_O2}
+# Build model 
+mod_1r <- rlmer(PO2 ~ time_min + intervention + (1 | id), 
+                data = df_no_O2)
+
+# Model summary
+summary(mod_1r)
+```
+
+#### Calculate confidence intervals
+```{r robust_ci_no_O2}
+# Set random seed (for reproducibility)
+set.seed(1234)
+
+# Extract point estimate for each coefficient
+mod_1_obs_intercept <- summary(mod_1r)$coefficients[[1]]
+mod_1_obs_time_min<- summary(mod_1r)$coefficients[[2]]
+mod_1_obs_m5050 <- summary(mod_1r)$coefficients[[3]]
+mod_1_obs_saline <- summary(mod_1r)$coefficients[[4]]
+
+# Create 1000 repliactes of each function call for all four coefficients
+# (Takes forever to run, so set random seed and ran code outside of knitr, 
+# saving the output to .rds files in `robust_regression_cache`, and reading 
+# the .rds files into memory when the code chunk is run)
+## Intercept
+# mod_1_intercept <- replicate(n = 1000,
+ #                             expr = boot_coef(d = df_no_O2, coeff = 1))
+  ## Write to file (to save time later)
+    # write_rds(mod_1_intercept,         
+     #          './robust_regression_cache/PO2_boma_mod_1_intercept.rds')
+     ## Read in saved bootstrap data
+     mod_1_intercept <- 
+         read_rds('./robust_regression_cache/PO2_boma_mod_1_intercept.rds')
+    
+## Time_min
+# mod_1_time_min <- replicate(n = 1000,
+ #                            expr = boot_coef(d = df_no_O2, coeff = 2))
+   ## Write to file (to save time later)
+     # write_rds(mod_1_time_min, 
+      #          './robust_regression_cache/PO2_boma_mod_1_time_min.rds')
+      ## Read in saved bootstrap data
+      mod_1_time_min <-
+          read_rds('./robust_regression_cache/PO2_boma_mod_1_time_min.rds')
+
+## Butorphanol vs Butorphanol + M5050
+# mod_1_m5050 <- replicate(n = 1000,
+  #                        expr = boot_coef(d = df_no_O2, coeff = 3))
+   ## Write to file (to save time later)
+     # write_rds(mod_1_m5050, 
+      #          './robust_regression_cache/PO2_boma_mod_1_m5050.rds')
+      ## Read in saved bootstrap data
+      mod_1_m5050 <- 
+          read_rds('./robust_regression_cache/PO2_boma_mod_1_m5050.rds')
+      
+## Butorphanol vs saline
+# mod_1_saline <- replicate(n = 1000,
+ #                          expr = boot_coef(d = df_no_O2, coeff = 4))
+  ## Write to file (to save time later)
+    # write_rds(mod_1_saline, 
+      #         './robust_regression_cache/PO2_boma_mod_1_saline.rds')
+      ## Read in saved bootstrap data
+      mod_1_saline <- 
+          read_rds('./robust_regression_cache/PO2_boma_mod_1_saline.rds')
+
+# Calculate simple percentile bootstrap 
+## Intercept
+quantile(mod_1_intercept,
+         p = c(0.975, 0.025))
+## Time_min
+quantile(mod_1_time_min,
+        p = c(0.975, 0.025))
+## M5050
+quantile(mod_1_m5050,
+        p = c(0.975, 0.025))
+## Saline
+quantile(mod_1_saline,
+        p = c(0.975, 0.025))
+```
+
+#### Model diagnostics
+```{r robust_diagnostics_no_O2}
+# Plots
+## Darker color indicates observations with a low robustness weight.
+plot(mod_1r)
+```
+
+### With supplemental oxygen
+#### Model 
+```{r robust_O2}
+# Build model
+mod_2r <- rlmer(PO2 ~ time_min + intervention + (1 | id), 
+                data = df_O2)
+
+# Model summary
+summary(mod_2r)
+```
+
+#### Calculate confidence intervals
+```{r robust_ci_O2}
+# Set random seed (for reproducibility)
+set.seed(1234)
+
+# Extract point estimate for each coefficient
+mod_2_obs_intercept <- summary(mod_2r)$coefficients[[1]]
+mod_2_obs_time_min<- summary(mod_2r)$coefficients[[2]]
+mod_2_obs_m5050 <- summary(mod_2r)$coefficients[[3]]
+mod_2_obs_saline <- summary(mod_2r)$coefficients[[4]]
+
+# Create 1000 repliactes of each function call for all four coefficients
+# (Takes forever to run, so set random seed and ran code outside of knitr, 
+# saving the output to *.rds files which are read into memory when the 
+# code chunk is run)
+## Intercept
+# mod_2_intercept <- replicate(n = 1000,
+ #                             expr = boot_coef(d = df_O2, coeff = 1))
+  ## Write to file (to save time later)
+    # write_rds(mod_2_intercept, 
+     #          './robust_regression_cache/PO2_boma_mod_2_intercept.rds')
+     ## Read in saved bootstrap data
+     mod_2_intercept <- 
+         read_rds('./robust_regression_cache/PO2_boma_mod_2_intercept.rds')
+    
+## Time_min
+# mod_2_time_min <- replicate(n = 1000,
+ #                            expr = boot_coef(d = df_O2, coeff = 2))
+   ## Write to file (to save time later)
+     # write_rds(mod_2_time_min,
+      #          './robust_regression_cache/PO2_boma_mod_2_time_min.rds')
+      ## Read in saved bootstrap data
+      mod_2_time_min <- 
+          read_rds('./robust_regression_cache/PO2_boma_mod_2_time_min.rds')
+
+## Butorphanol vs Butorphanol + M5050
+# mod_2_m5050 <- replicate(n = 1000,
+  #                        expr = boot_coef(d = df_O2, coeff = 3))
+   ## Write to file (to save time later)
+     # write_rds(mod_2_m5050, 
+      #          './robust_regression_cache/PO2_boma_mod_2_m5050.rds')
+      ## Read in saved bootstrap data
+      mod_2_m5050 <- 
+          read_rds('./robust_regression_cache/PO2_boma_mod_2_m5050.rds')
+      
+## Butorphanol vs saline
+# mod_2_saline <- replicate(n = 1000,
+ #                          expr = boot_coef(d = df_O2, coeff = 4))
+  ## Write to file (to save time later)
+    # write_rds(mod_2_saline, 
+      #         './robust_regression_cache/PO2_boma_mod_2_saline.rds')
+      ## Read in saved bootstrap data
+      mod_2_saline <- 
+          read_rds('./robust_regression_cache/PO2_boma_mod_2_saline.rds')
+
+# Calculate simple percentile bootstrap 
+## Intercept
+quantile(mod_2_intercept,
+         p = c(0.975, 0.025))
+## Time_min
+quantile(mod_2_time_min,
+        p = c(0.975, 0.025))
+## M5050
+quantile(mod_2_m5050,
+        p = c(0.975, 0.025))
+## Saline
+quantile(mod_2_saline,
+        p = c(0.975, 0.025))
+```
+
+#### Model diagnostics
+```{r robust_diagnostics_O2}
+# Plots
+## Darker color indicates observations with a low robustness weight.
+plot(mod_2r)
+```
+
+# Session information
+```{r session_info}
+sessionInfo()
+```
