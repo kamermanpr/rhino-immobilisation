@@ -210,7 +210,7 @@ sub_2 <- plot_grid(sub_1,
                    nrow = 2,
                    ncol = 1,
                    scale = c(1, 1),
-                   rel_heights = c(1, 0.9))
+                   rel_heights = c(1, 0.87))
 
 ## Sub-plot 3 (add RR)
 sub_3 <- plot_grid(sub_2,
@@ -224,7 +224,7 @@ sub_3 <- plot_grid(sub_2,
                    nrow = 2,
                    ncol = 1,
                    scale = c(1, 1),
-                   rel_heights = c(1, 0.60))
+                   rel_heights = c(1, 0.64))
 
 ## Get and add legend
 legnd <- get_legend(plot_PO2)

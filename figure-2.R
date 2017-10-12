@@ -198,7 +198,7 @@ sub_2_3 <- plot_grid(sub_2_2,
                    nrow = 2,
                    ncol = 1,
                    scale = c(1, 1),
-                   rel_heights = c(1, 0.66))
+                   rel_heights = c(1, 0.63))
 
 ## Get and add legend
 legnd <- get_legend(plot_2_PO2)
