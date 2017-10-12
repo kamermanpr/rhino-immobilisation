@@ -3,22 +3,24 @@ title: 'Rhino immobilisation: Arterial PCO2'
 author: "Peter Kamerman"
 date: "`r format(Sys.Date(), '%d %B %Y')`"
 output:
-#  html_document:
-   # highlight: pygments
-   # theme: yeti
-   # number_sections: true
-   # code_folding: hide
-   # toc: yes
-   # toc_depth: 4
-   # toc_float: true
-  pdf_document:
+output:
+  html_document:
     highlight: pygments
-    number_sections: yes
+    theme: yeti
+    number_sections: true
+    code_folding: hide
     toc: yes
     toc_depth: 4
-geometry:
-- a4paper
-- margin=25mm
+    toc_float: true
+# For generating supplementary material pdfs
+#   pdf_document:
+#     highlight: pygments
+#     toc: yes
+#     toc_depth: 4
+#     number_sections: true
+# geometry: 
+#   - a4paper
+#   - margin=25mm
 ---
 
 ```{r setup, include = FALSE}
