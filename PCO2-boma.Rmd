@@ -20,7 +20,6 @@ output:
 # geometry: 
 #   - a4paper
 #   - margin=25mm
-
 ---
 
 ```{r setup, include = FALSE}
