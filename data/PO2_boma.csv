@@ -63,38 +63,38 @@ time_min,intervention,PO2,id,supplement
 10,Butorphanol,55,ID8,nothing
 15,Butorphanol,50,ID8,nothing
 20,Butorphanol,48,ID8,nothing
-5,Saline,23,ID1,nothing
-10,Saline,23,ID1,nothing
-15,Saline,26,ID1,nothing
-20,Saline,28,ID1,nothing
-5,Saline,21,ID2,nothing
-10,Saline,23,ID2,nothing
-15,Saline,27,ID2,nothing
-20,Saline,28,ID2,nothing
-5,Saline,27,ID3,nothing
-10,Saline,33,ID3,nothing
-15,Saline,33,ID3,nothing
-20,Saline,32,ID3,nothing
-5,Saline,38,ID4,nothing
-10,Saline,33,ID4,nothing
-15,Saline,34,ID4,nothing
-20,Saline,36,ID4,nothing
-5,Saline,23,ID5,nothing
-10,Saline,27,ID5,nothing
-15,Saline,32,ID5,nothing
-20,Saline,33,ID5,nothing
-5,Saline,34,ID6,nothing
-10,Saline,24,ID6,nothing
-15,Saline,27,ID6,nothing
-20,Saline,35,ID6,nothing
-5,Saline,33,ID7,nothing
-10,Saline,30,ID7,nothing
-15,Saline,32,ID7,nothing
-20,Saline,32,ID7,nothing
-5,Saline,18,ID8,nothing
-10,Saline,20,ID8,nothing
-15,Saline,21,ID8,nothing
-20,Saline,26,ID8,nothing
+5,Sterile water,23,ID1,nothing
+10,Sterile water,23,ID1,nothing
+15,Sterile water,26,ID1,nothing
+20,Sterile water,28,ID1,nothing
+5,Sterile water,21,ID2,nothing
+10,Sterile water,23,ID2,nothing
+15,Sterile water,27,ID2,nothing
+20,Sterile water,28,ID2,nothing
+5,Sterile water,27,ID3,nothing
+10,Sterile water,33,ID3,nothing
+15,Sterile water,33,ID3,nothing
+20,Sterile water,32,ID3,nothing
+5,Sterile water,38,ID4,nothing
+10,Sterile water,33,ID4,nothing
+15,Sterile water,34,ID4,nothing
+20,Sterile water,36,ID4,nothing
+5,Sterile water,23,ID5,nothing
+10,Sterile water,27,ID5,nothing
+15,Sterile water,32,ID5,nothing
+20,Sterile water,33,ID5,nothing
+5,Sterile water,34,ID6,nothing
+10,Sterile water,24,ID6,nothing
+15,Sterile water,27,ID6,nothing
+20,Sterile water,35,ID6,nothing
+5,Sterile water,33,ID7,nothing
+10,Sterile water,30,ID7,nothing
+15,Sterile water,32,ID7,nothing
+20,Sterile water,32,ID7,nothing
+5,Sterile water,18,ID8,nothing
+10,Sterile water,20,ID8,nothing
+15,Sterile water,21,ID8,nothing
+20,Sterile water,26,ID8,nothing
 5,Butorphanol+M5050,23,ID1,oxygen
 10,Butorphanol+M5050,104,ID1,oxygen
 15,Butorphanol+M5050,131,ID1,oxygen
@@ -159,35 +159,35 @@ time_min,intervention,PO2,id,supplement
 10,Butorphanol,101,ID8,oxygen
 15,Butorphanol,209,ID8,oxygen
 20,Butorphanol,264,ID8,oxygen
-5,Saline,23,ID1,oxygen
-10,Saline,23,ID1,oxygen
-15,Saline,26,ID1,oxygen
-20,Saline,28,ID1,oxygen
-5,Saline,21,ID2,oxygen
-10,Saline,23,ID2,oxygen
-15,Saline,27,ID2,oxygen
-20,Saline,28,ID2,oxygen
-5,Saline,27,ID3,oxygen
-10,Saline,33,ID3,oxygen
-15,Saline,33,ID3,oxygen
-20,Saline,32,ID3,oxygen
-5,Saline,38,ID4,oxygen
-10,Saline,33,ID4,oxygen
-15,Saline,34,ID4,oxygen
-20,Saline,36,ID4,oxygen
-5,Saline,23,ID5,oxygen
-10,Saline,27,ID5,oxygen
-15,Saline,32,ID5,oxygen
-20,Saline,33,ID5,oxygen
-5,Saline,34,ID6,oxygen
-10,Saline,24,ID6,oxygen
-15,Saline,27,ID6,oxygen
-20,Saline,35,ID6,oxygen
-5,Saline,33,ID7,oxygen
-10,Saline,30,ID7,oxygen
-15,Saline,32,ID7,oxygen
-20,Saline,32,ID7,oxygen
-5,Saline,18,ID8,oxygen
-10,Saline,20,ID8,oxygen
-15,Saline,21,ID8,oxygen
-20,Saline,26,ID8,oxygen
+5,Sterile water,23,ID1,oxygen
+10,Sterile water,23,ID1,oxygen
+15,Sterile water,26,ID1,oxygen
+20,Sterile water,28,ID1,oxygen
+5,Sterile water,21,ID2,oxygen
+10,Sterile water,23,ID2,oxygen
+15,Sterile water,27,ID2,oxygen
+20,Sterile water,28,ID2,oxygen
+5,Sterile water,27,ID3,oxygen
+10,Sterile water,33,ID3,oxygen
+15,Sterile water,33,ID3,oxygen
+20,Sterile water,32,ID3,oxygen
+5,Sterile water,38,ID4,oxygen
+10,Sterile water,33,ID4,oxygen
+15,Sterile water,34,ID4,oxygen
+20,Sterile water,36,ID4,oxygen
+5,Sterile water,23,ID5,oxygen
+10,Sterile water,27,ID5,oxygen
+15,Sterile water,32,ID5,oxygen
+20,Sterile water,33,ID5,oxygen
+5,Sterile water,34,ID6,oxygen
+10,Sterile water,24,ID6,oxygen
+15,Sterile water,27,ID6,oxygen
+20,Sterile water,35,ID6,oxygen
+5,Sterile water,33,ID7,oxygen
+10,Sterile water,30,ID7,oxygen
+15,Sterile water,32,ID7,oxygen
+20,Sterile water,32,ID7,oxygen
+5,Sterile water,18,ID8,oxygen
+10,Sterile water,20,ID8,oxygen
+15,Sterile water,21,ID8,oxygen
+20,Sterile water,26,ID8,oxygen

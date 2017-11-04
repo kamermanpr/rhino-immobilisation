@@ -63,7 +63,7 @@ resp_rate <- bind_rows(boma, boma_O2) %>%
     mutate(id = paste0('ID', id)) %>%
     # Order interventions
     mutate(intervention = case_when(
-        .$intervention == 'Control' ~ 'Saline',
+        .$intervention == 'Control' ~ 'Sterile water',
         .$intervention == 'But' ~ 'Butorphanol',
         .$intervention == 'But+M5050' ~ 'Butorphanol+M5050'
     ),
@@ -71,7 +71,7 @@ resp_rate <- bind_rows(boma, boma_O2) %>%
     intervention = forcats::fct_relevel(intervention,
                                         'Butorphanol', 
                                         'Butorphanol+M5050',
-                                        'Saline'))
+                                        'Sterile water'))
 
 # Save and clean-up
 write_rds(x = resp_rate,
@@ -133,7 +133,7 @@ PO2 <- bind_rows(boma, boma_O2) %>%
     mutate(id = paste0('ID', id)) %>%
     # Order interventions
     mutate(intervention = case_when(
-        .$intervention == 'Control' ~ 'Saline',
+        .$intervention == 'Control' ~ 'Sterile water',
         .$intervention == 'But' ~ 'Butorphanol',
         .$intervention == 'But+M5050' ~ 'Butorphanol+M5050'
     ),
@@ -141,7 +141,7 @@ PO2 <- bind_rows(boma, boma_O2) %>%
     intervention = forcats::fct_relevel(intervention,
                                         'Butorphanol', 
                                         'Butorphanol+M5050',
-                                        'Saline'))
+                                        'Sterile water'))
 
 # Save and clean-up
 write_rds(x = PO2,
@@ -204,7 +204,7 @@ PCO2 <- bind_rows(boma, boma_O2) %>%
     mutate(id = paste0('ID', id)) %>%
     # Order interventions
     mutate(intervention = case_when(
-        .$intervention == 'Control' ~ 'Saline',
+        .$intervention == 'Control' ~ 'Sterile water',
         .$intervention == 'But' ~ 'Butorphanol',
         .$intervention == 'But+M5050' ~ 'Butorphanol+M5050'
     ),
@@ -212,7 +212,7 @@ PCO2 <- bind_rows(boma, boma_O2) %>%
            intervention = forcats::fct_relevel(intervention,
                                                'Butorphanol', 
                                                'Butorphanol+M5050',
-                                               'Saline'))
+                                               'Sterile water'))
 
 # Save and clean-up
 write_rds(x = PCO2,

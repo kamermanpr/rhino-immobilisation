@@ -85,7 +85,7 @@ df %>%
 
 ****
 
-**Note**: Analysis compares _Butorphanol_ to _Saline_ and _Butorphanol + M5050_, and only includes main effects.
+**Note**: Analysis compares _Butorphanol_ to _Sterile water_ and _Butorphanol + M5050_, and only includes main effects.
 
 ****
 
@@ -242,7 +242,7 @@ set.seed(1234)
 mod_1_obs_intercept <- summary(mod_1r)$coefficients[[1]]
 mod_1_obs_time_min<- summary(mod_1r)$coefficients[[2]]
 mod_1_obs_m5050 <- summary(mod_1r)$coefficients[[3]]
-mod_1_obs_saline <- summary(mod_1r)$coefficients[[4]]
+mod_1_obs_control <- summary(mod_1r)$coefficients[[4]]
 
 # Create 1000 repliactes of each function call for all four coefficients
 # (Takes forever to run, so set random seed and ran code outside of knitr, 
@@ -278,15 +278,15 @@ mod_1_obs_saline <- summary(mod_1r)$coefficients[[4]]
       mod_1_m5050 <- 
           read_rds('./robust_regression_cache/PO2_boma_mod_1_m5050.rds')
       
-## Butorphanol vs saline
-# mod_1_saline <- replicate(n = 1000,
+## Butorphanol vs control
+# mod_1_control <- replicate(n = 1000,
  #                          expr = boot_coef(d = df_no_O2, coeff = 4))
   ## Write to file (to save time later)
-    # write_rds(mod_1_saline, 
-      #         './robust_regression_cache/PO2_boma_mod_1_saline.rds')
+    # write_rds(mod_1_control, 
+      #         './robust_regression_cache/PO2_boma_mod_1_control.rds')
       ## Read in saved bootstrap data
-      mod_1_saline <- 
-          read_rds('./robust_regression_cache/PO2_boma_mod_1_saline.rds')
+      mod_1_control <- 
+          read_rds('./robust_regression_cache/PO2_boma_mod_1_control.rds')
 
 # Calculate simple percentile bootstrap 
 ## Intercept
@@ -298,8 +298,8 @@ quantile(mod_1_time_min,
 ## M5050
 quantile(mod_1_m5050,
         p = c(0.975, 0.025))
-## Saline
-quantile(mod_1_saline,
+## control
+quantile(mod_1_control,
         p = c(0.975, 0.025))
 ```
 
@@ -330,7 +330,7 @@ set.seed(1234)
 mod_2_obs_intercept <- summary(mod_2r)$coefficients[[1]]
 mod_2_obs_time_min<- summary(mod_2r)$coefficients[[2]]
 mod_2_obs_m5050 <- summary(mod_2r)$coefficients[[3]]
-mod_2_obs_saline <- summary(mod_2r)$coefficients[[4]]
+mod_2_obs_control <- summary(mod_2r)$coefficients[[4]]
 
 # Create 1000 repliactes of each function call for all four coefficients
 # (Takes forever to run, so set random seed and ran code outside of knitr, 
@@ -366,15 +366,15 @@ mod_2_obs_saline <- summary(mod_2r)$coefficients[[4]]
       mod_2_m5050 <- 
           read_rds('./robust_regression_cache/PO2_boma_mod_2_m5050.rds')
       
-## Butorphanol vs saline
-# mod_2_saline <- replicate(n = 1000,
+## Butorphanol vs control
+# mod_2_control <- replicate(n = 1000,
  #                          expr = boot_coef(d = df_O2, coeff = 4))
   ## Write to file (to save time later)
-    # write_rds(mod_2_saline, 
-      #         './robust_regression_cache/PO2_boma_mod_2_saline.rds')
+    # write_rds(mod_2_control, 
+      #         './robust_regression_cache/PO2_boma_mod_2_control.rds')
       ## Read in saved bootstrap data
-      mod_2_saline <- 
-          read_rds('./robust_regression_cache/PO2_boma_mod_2_saline.rds')
+      mod_2_control <- 
+          read_rds('./robust_regression_cache/PO2_boma_mod_2_control.rds')
 
 # Calculate simple percentile bootstrap 
 ## Intercept
@@ -386,8 +386,8 @@ quantile(mod_2_time_min,
 ## M5050
 quantile(mod_2_m5050,
         p = c(0.975, 0.025))
-## Saline
-quantile(mod_2_saline,
+## control
+quantile(mod_2_control,
         p = c(0.975, 0.025))
 ```
 

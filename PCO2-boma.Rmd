@@ -3,7 +3,6 @@ title: 'Rhino immobilisation: Arterial PCO2'
 author: "Peter Kamerman"
 date: "`r format(Sys.Date(), '%d %B %Y')`"
 output:
-output:
   html_document:
     highlight: pygments
     theme: yeti
@@ -21,6 +20,7 @@ output:
 # geometry: 
 #   - a4paper
 #   - margin=25mm
+
 ---
 
 ```{r setup, include = FALSE}
@@ -86,7 +86,7 @@ df %>%
 
 ****
 
-**Note:** Analysis compares _Butorphanol_ to _Saline_ and _Butorphanol + M5050_, and only includes main effects.
+**Note:** Analysis compares _Butorphanol_ to _Sterile water_ and _Butorphanol + M5050_, and only includes main effects.
 
 ****
 

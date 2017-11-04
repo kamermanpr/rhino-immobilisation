@@ -63,38 +63,38 @@ time_min,intervention,PCO2,id,supplement
 10,Butorphanol,67,ID8,nothing
 15,Butorphanol,70,ID8,nothing
 20,Butorphanol,73,ID8,nothing
-5,Saline,78,ID1,nothing
-10,Saline,81,ID1,nothing
-15,Saline,76,ID1,nothing
-20,Saline,81,ID1,nothing
-5,Saline,80,ID2,nothing
-10,Saline,86,ID2,nothing
-15,Saline,86,ID2,nothing
-20,Saline,84,ID2,nothing
-5,Saline,79,ID3,nothing
-10,Saline,78,ID3,nothing
-15,Saline,80,ID3,nothing
-20,Saline,79,ID3,nothing
-5,Saline,80,ID4,nothing
-10,Saline,83,ID4,nothing
-15,Saline,80,ID4,nothing
-20,Saline,81,ID4,nothing
-5,Saline,96,ID5,nothing
-10,Saline,94,ID5,nothing
-15,Saline,98,ID5,nothing
-20,Saline,76,ID5,nothing
-5,Saline,81,ID6,nothing
-10,Saline,94,ID6,nothing
-15,Saline,92,ID6,nothing
-20,Saline,85,ID6,nothing
-5,Saline,81,ID7,nothing
-10,Saline,85,ID7,nothing
-15,Saline,80,ID7,nothing
-20,Saline,79,ID7,nothing
-5,Saline,83,ID8,nothing
-10,Saline,95,ID8,nothing
-15,Saline,94,ID8,nothing
-20,Saline,89,ID8,nothing
+5,Sterile water,78,ID1,nothing
+10,Sterile water,81,ID1,nothing
+15,Sterile water,76,ID1,nothing
+20,Sterile water,81,ID1,nothing
+5,Sterile water,80,ID2,nothing
+10,Sterile water,86,ID2,nothing
+15,Sterile water,86,ID2,nothing
+20,Sterile water,84,ID2,nothing
+5,Sterile water,79,ID3,nothing
+10,Sterile water,78,ID3,nothing
+15,Sterile water,80,ID3,nothing
+20,Sterile water,79,ID3,nothing
+5,Sterile water,80,ID4,nothing
+10,Sterile water,83,ID4,nothing
+15,Sterile water,80,ID4,nothing
+20,Sterile water,81,ID4,nothing
+5,Sterile water,96,ID5,nothing
+10,Sterile water,94,ID5,nothing
+15,Sterile water,98,ID5,nothing
+20,Sterile water,76,ID5,nothing
+5,Sterile water,81,ID6,nothing
+10,Sterile water,94,ID6,nothing
+15,Sterile water,92,ID6,nothing
+20,Sterile water,85,ID6,nothing
+5,Sterile water,81,ID7,nothing
+10,Sterile water,85,ID7,nothing
+15,Sterile water,80,ID7,nothing
+20,Sterile water,79,ID7,nothing
+5,Sterile water,83,ID8,nothing
+10,Sterile water,95,ID8,nothing
+15,Sterile water,94,ID8,nothing
+20,Sterile water,89,ID8,nothing
 5,Butorphanol+M5050,83,ID1,oxygen
 10,Butorphanol+M5050,89,ID1,oxygen
 15,Butorphanol+M5050,76,ID1,oxygen
@@ -159,35 +159,35 @@ time_min,intervention,PCO2,id,supplement
 10,Butorphanol,84,ID8,oxygen
 15,Butorphanol,91,ID8,oxygen
 20,Butorphanol,91,ID8,oxygen
-5,Saline,78,ID1,oxygen
-10,Saline,81,ID1,oxygen
-15,Saline,76,ID1,oxygen
-20,Saline,81,ID1,oxygen
-5,Saline,80,ID2,oxygen
-10,Saline,86,ID2,oxygen
-15,Saline,86,ID2,oxygen
-20,Saline,84,ID2,oxygen
-5,Saline,79,ID3,oxygen
-10,Saline,78,ID3,oxygen
-15,Saline,80,ID3,oxygen
-20,Saline,79,ID3,oxygen
-5,Saline,80,ID4,oxygen
-10,Saline,83,ID4,oxygen
-15,Saline,80,ID4,oxygen
-20,Saline,81,ID4,oxygen
-5,Saline,96,ID5,oxygen
-10,Saline,94,ID5,oxygen
-15,Saline,98,ID5,oxygen
-20,Saline,76,ID5,oxygen
-5,Saline,81,ID6,oxygen
-10,Saline,94,ID6,oxygen
-15,Saline,92,ID6,oxygen
-20,Saline,85,ID6,oxygen
-5,Saline,81,ID7,oxygen
-10,Saline,85,ID7,oxygen
-15,Saline,80,ID7,oxygen
-20,Saline,79,ID7,oxygen
-5,Saline,83,ID8,oxygen
-10,Saline,95,ID8,oxygen
-15,Saline,94,ID8,oxygen
-20,Saline,89,ID8,oxygen
+5,Sterile water,78,ID1,oxygen
+10,Sterile water,81,ID1,oxygen
+15,Sterile water,76,ID1,oxygen
+20,Sterile water,81,ID1,oxygen
+5,Sterile water,80,ID2,oxygen
+10,Sterile water,86,ID2,oxygen
+15,Sterile water,86,ID2,oxygen
+20,Sterile water,84,ID2,oxygen
+5,Sterile water,79,ID3,oxygen
+10,Sterile water,78,ID3,oxygen
+15,Sterile water,80,ID3,oxygen
+20,Sterile water,79,ID3,oxygen
+5,Sterile water,80,ID4,oxygen
+10,Sterile water,83,ID4,oxygen
+15,Sterile water,80,ID4,oxygen
+20,Sterile water,81,ID4,oxygen
+5,Sterile water,96,ID5,oxygen
+10,Sterile water,94,ID5,oxygen
+15,Sterile water,98,ID5,oxygen
+20,Sterile water,76,ID5,oxygen
+5,Sterile water,81,ID6,oxygen
+10,Sterile water,94,ID6,oxygen
+15,Sterile water,92,ID6,oxygen
+20,Sterile water,85,ID6,oxygen
+5,Sterile water,81,ID7,oxygen
+10,Sterile water,85,ID7,oxygen
+15,Sterile water,80,ID7,oxygen
+20,Sterile water,79,ID7,oxygen
+5,Sterile water,83,ID8,oxygen
+10,Sterile water,95,ID8,oxygen
+15,Sterile water,94,ID8,oxygen
+20,Sterile water,89,ID8,oxygen

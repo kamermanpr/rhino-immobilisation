@@ -129,7 +129,7 @@ plot_PO2 <- readr::read_rds('./data/PO2_boma.rds') %>%
 
 # PCO2
 plot_PCO2 <- readr::read_rds('./data/PCO2_boma.rds') %>%
-    # Recode supplement
+   # Recode supplement
     mutate(supplement = ifelse(supplement == 'oxygen',
                                yes = 'Oxygen',
                                no = 'No oxygen')) %>%
